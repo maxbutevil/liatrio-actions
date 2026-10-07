@@ -33,8 +33,11 @@ describe("Tests to the \"/\" endpoint", () => {
         expect(res.data.timestamp).to.be.within(now - 5000, now);
     });
     it("should return a minified JSON object.", async () => {
-        const res = await axios(`http://${dockerBridgeIP}:80/`);
-        // TODO: Finish this test
-        throw new Error("TypeError: Object(...) is not a function");
+        // this regex approach has a couple quirks:
+        // - doesn't allow escaped quotes in string fields
+        // - only allows string and numeric fields
+        const res = await axios(`http://${dockerBridgeIP}:80/`, { transformResponse: txt => txt });
+        const regex = /^{("\w+":("[^"]+"|\d+),)*"\w+":("[^"]+"|\d+)}$/g;
+        assert(res.match(regex));
     });
 });
