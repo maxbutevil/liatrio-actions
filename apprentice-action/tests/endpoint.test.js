@@ -37,8 +37,8 @@ describe("Tests to the \"/\" endpoint", () => {
         // this regex approach has a couple quirks:
         // - doesn't allow escaped quotes in string fields
         // - only allows string and numeric fields
-        const res = await axios(`http://${dockerBridgeIP}:80/`, { transformResponse: txt => txt });
+        const res = await axios(`http://${dockerBridgeIP}:80/`, { transformResponse: data => data });
         const regex = /^{("\w+":("[^"]+"|\d+),)*"\w+":("[^"]+"|\d+)}$/g;
-        assert(res.match(regex));
+        assert(res.data.match(regex));
     });
 });
